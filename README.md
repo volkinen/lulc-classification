@@ -3,6 +3,11 @@
 Supervised machine learning classification of land use / land cover (LULC)
 from multi-band satellite imagery and a digital elevation model.
 
+> This repository contains the code accompanying the paper:
+> **"Classification of land use and land cover (LU/LC) of a high-resolution
+> Pléiades satellite image using different machine learning algorithms"**
+> *(under review — citation will be updated upon publication)*
+
 ---
 
 ## Overview
@@ -129,6 +134,14 @@ Follow these steps in order:
 3. **`notebooks/03_visualize.ipynb`** → *Restart & Run All*
    *(Tables and figures are saved under `results/`)*
 
+### Pipeline Outputs (sample)
+
+| | |
+|---|---|
+| ![DEM](docs/figures/fig_dem.png) | ![NDVI](docs/figures/fig_ndvi.png) |
+
+![Gabor filter bank](docs/figures/fig_gabor_filters.png)
+
 ### Using Your Own Data
 
 1. Replace the files in `data/` with your own (keep the same filenames)
@@ -243,8 +256,10 @@ If any problem is found, an error is raised before the workflow starts.
 
 ## Results
 
-The table below shows results on the sample data (500 × 500 px).
-Results on the full image (8 404 × 7 202 px) may differ.
+### Research Results (Full Pleiades Image — 8 404 × 7 202 px)
+
+The table below reports results from the actual study conducted on the full
+Pleiades PHR1B image. These are the numbers referenced in the associated publication.
 
 | Algorithm | Band Configuration | Accuracy | Weighted F1 | Cohen's Kappa |
 |:----------|:------------------|:--------:|:-----------:|:-------------:|
@@ -258,3 +273,56 @@ Results on the full image (8 404 × 7 202 px) may differ.
 | XGBoost   | 9 Band | 0.97 | 0.97 | 0.96 |
 
 **Best configuration:** 9 Band + LightGBM — Accuracy: 0.976, Kappa: 0.966
+
+---
+
+![Accuracy trends across band configurations](docs/figures/fig1_accuracy_trends.png)
+
+![Algorithm comparison heatmap](docs/figures/fig3_heatmap_by_algorithm.png)
+
+![Feature importance](docs/figures/fig5_feature_importance.png)
+
+![Multi-metric radar chart](docs/figures/fig7_radar.png)
+
+---
+
+> **Note on the included sample data**
+>
+> The `data/` directory contains a 500 × 500 pixel Sentinel-2 crop provided
+> solely to make the pipeline runnable out of the box.
+> Running the notebooks on this sample will produce near-perfect metrics
+> (accuracy ≈ 1.00 on most configurations), which do **not** reflect the
+> research results above.
+>
+> This behaviour is expected and has two causes:
+> - **Small spatial extent:** the crop covers only ~1 km² with very few
+>   training pixels per class. The models memorise the sample rather than
+>   learning generalisable patterns.
+> - **Coarser source imagery:** the sample was resampled from 10 m Sentinel-2
+>   to 2 m/px; spectral variability is lower than the original 2 m Pleiades data,
+>   making classes artificially easy to separate.
+>
+> To reproduce the results in the table, replace `data/image.tif` with
+> a Pleiades (or equivalent 2 m resolution) image of sufficient area.
+
+---
+
+## Citation
+
+If you use this code in your research, please cite the associated paper:
+
+> **Classification of land use and land cover (LU/LC) of a high-resolution
+> Pléiades satellite image using different machine learning algorithms**
+>
+> *Manuscript under review. Citation details will be added upon publication.*
+
+Until the paper is published, you may reference this repository directly:
+
+```
+@misc{lulc-classification,
+  author  = {Yazici, Bulent Volkan and Ozalp, Mehmet and Akinci, Halil},
+  title   = {LU/LC Classification — Pléiades satellite image},
+  year    = {2026},
+  url     = {https://github.com/volkinen/lulc-classification}
+}
+```
